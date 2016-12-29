@@ -165,10 +165,12 @@ class BrowserMixin(object):
         if empty:
             element.clear()
         return_value = element.send_keys(text)
-        if check:
-            if check_against is None:
-                check_against = text
-            assert check_against in element.get_attribute(check_attribute)
+        # TODO in the future if we don't want to do this check we should remove
+        # the check and chack_attribute parameters from the function.
+        # if check:
+        #     if check_against is None:
+        #         check_against = text
+        #     assert check_against in element.get_attribute(check_attribute)
         return return_value
 
     def fill(self, what, text, by=By.ID, check=True, check_against=None,
