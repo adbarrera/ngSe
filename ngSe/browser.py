@@ -250,7 +250,7 @@ class RemoteBrowser(BrowserMixin, Remote):
 
         super(RemoteBrowser, self).__init__(
             desired_capabilities=DesiredCapabilities.CHROME,
-            command_executor='http://amg-selenium-test.stage.zefr.com:4444/wd/hub')  # nopep8
+            command_executor='{}:4444/wd/hub'.format(selenium_host))
         register_exit(self.quit)
 
 
