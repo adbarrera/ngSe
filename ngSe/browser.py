@@ -147,7 +147,7 @@ class BrowserMixin(object):
         return chain.perform()
 
     @staticmethod
-    def _fill(element, text, by=By.ID, check=True, check_against=None,
+    def _fill(element, text, by=By.ID, check=False, check_against=None,
               check_attribute="value", empty=False):
         """Fills in a given element with the given text, optionally checking
         emptying it first and/or checking the contents after (optionally
@@ -165,13 +165,16 @@ class BrowserMixin(object):
         if empty:
             element.clear()
         return_value = element.send_keys(text)
+        # TODO in the future we should change this so it keeps attempting to
+        # see if the text has been populated until it fails a set number of
+        # times
         if check:
             if check_against is None:
                 check_against = text
             assert check_against in element.get_attribute(check_attribute)
         return return_value
 
-    def fill(self, what, text, by=By.ID, check=True, check_against=None,
+    def fill(self, what, text, by=By.ID, check=False, check_against=None,
              check_attribute="value", empty=False):
         """Finds and fills in an element with the given text.
         """
@@ -248,7 +251,7 @@ class RemoteBrowser(BrowserMixin, Remote):
 
         super(RemoteBrowser, self).__init__(
             desired_capabilities=DesiredCapabilities.CHROME,
-            command_executor='http://amg-selenium-test.stage.zefr.com:4444/wd/hub')  # nopep8
+            command_executor='{}:4444/wd/hub'.format(selenium_host))
         register_exit(self.quit)
 
 
